@@ -10,4 +10,8 @@
       <ProjectReference Include="..\Homework.Exercise.Domain\Homework.Exercise.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
+    </ItemGroup>
+
 </Project>
