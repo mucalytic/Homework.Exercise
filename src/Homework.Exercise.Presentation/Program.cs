@@ -3,7 +3,7 @@ using Homework.Exercise.Application;
 using Microsoft.Extensions.Hosting;
 
 await Host.CreateDefaultBuilder(args)
-          .ConfigureServices((context, services) =>
+          .ConfigureServices((_, services) =>
            {
                services.AddApplication();
                services.AddInfrastructure();

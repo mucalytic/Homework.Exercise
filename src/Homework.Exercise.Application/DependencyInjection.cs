@@ -12,6 +12,7 @@ public static class DependencyInjection
         services.AddSingleton<IPartnerNotifier, NotifierForPartnerA>();
         services.AddSingleton<IPartnerNotifier, NotifierForPartnerB>();
         services.AddTransient<IDateTimeProvider, DateTimeProvider>();
+        services.AddHostedService<FileSystemWatcherService>();
         return services;
     }
 }
