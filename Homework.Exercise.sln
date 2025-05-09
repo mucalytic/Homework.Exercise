@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{85F59B22-CB63-4344-9669-E8E818159F18}"
+	ProjectSection(SolutionItems) = preProject
+		data\inbox\IBT.xml = data\inbox\IBT.xml
+	EndProjectSection
+EndProject
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{A00BA08B-3AED-4232-A754-B549518CA916}"
+	ProjectSection(SolutionItems) = preProject
+		docs\todo.md = docs\todo.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{5BE654DE-7FA7-43C8-BD43-DD4A9576CE87}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5E56BD06-ABBC-48CF-93B0-B91BE4D787CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{DAC9370D-5EC3-4134-AA91-CEC87FDC2FE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Homework.Exercise.Presentation", "src\Homework.Exercise.Presentation\Homework.Exercise.Presentation.csproj", "{67FCEFD8-BC7B-4967-8EAF-8EFDA8975E73}"
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67FCEFD8-BC7B-4967-8EAF-8EFDA8975E73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67FCEFD8-BC7B-4967-8EAF-8EFDA8975E73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67FCEFD8-BC7B-4967-8EAF-8EFDA8975E73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67FCEFD8-BC7B-4967-8EAF-8EFDA8975E73}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{67FCEFD8-BC7B-4967-8EAF-8EFDA8975E73} = {5E56BD06-ABBC-48CF-93B0-B91BE4D787CA}
+	EndGlobalSection
+EndGlobal

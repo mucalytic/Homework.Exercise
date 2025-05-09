@@ -1,0 +1,17 @@
+- [ ] process IBT XML messages
+  - [ ] load from local file but expect this to change
+  - [ ] extract EventType
+  - [ ] save EventType with a time stamp to the database
+- [ ] notify partners with specific data
+  - [ ] partner A
+    - [ ] send an email with the following fields extracted from the XML:
+      - [ ] ProductNameFull
+      - [ ] IBTTypeCode
+      - [ ] EventType
+      - [ ] ISIN : where IdSchemeCode = "I-"
+  - [ ] partner B
+    - [ ] save file to disk if EventType is 9097
+      - [ ] <InstrumentNotification>
+        - [ ] <Timespan> : Current timestamp
+        - [ ] <ISIN> : where IdSchemeCode = "I-"
+    
