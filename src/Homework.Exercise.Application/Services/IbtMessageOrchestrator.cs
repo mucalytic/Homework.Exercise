@@ -8,10 +8,11 @@ namespace Homework.Exercise.Application.Services;
 
 public class IbtMessageOrchestrator(
     ILogger<IbtMessageOrchestrator> logger,
+    IEnumerable<IPartnerNotifier>notifiers,
     IOptions<FileSettings> fileSettings,
     IIbtMessageParser messageParser,
-    IPartnerNotifier[] notifiers,
     IIbtRepository ibtRepository,
+    IPathResolver pathResolver,
     IFileReader fileReader) : IIbtMessageOrchestrator
 {
     private readonly FileSettings _fileSettings = fileSettings.Value;
@@ -43,13 +44,11 @@ public class IbtMessageOrchestrator(
                     catch (ArgumentNullException ex)
                     {
                         logger.LogError(ex, $"Failed to create {nameof(EventType)}");
-                        continue;
                     }
                     catch (Exception ex)
                     {
                         logger.LogError(ex, "Failed to save IbtEvent to database for message with {EventType}.",
                             message.EventType);
-                        continue;
                     }
                     foreach (var notifier in notifiers)
                     {
@@ -75,7 +74,13 @@ public class IbtMessageOrchestrator(
                         }
                     }
                 }
-                var archivePath = Path.Combine(_fileSettings.ArchivePath, Path.GetFileName(filePath));
+                var archivePathResult = pathResolver.ResolvePath(_fileSettings.ArchivePath);
+                if (archivePathResult.IsFailed || !Directory.Exists(archivePathResult.Value))
+                {
+                    logger.LogWarning("Archive directory {InboxPath} does not exist.", _fileSettings.ArchivePath);
+                    return;
+                }
+                var archivePath = Path.Combine(archivePathResult.Value, Path.GetFileName(filePath));
                 try
                 {
                     File.Move(filePath, archivePath, overwrite: true);

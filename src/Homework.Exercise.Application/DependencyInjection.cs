@@ -13,6 +13,7 @@ public static class DependencyInjection
         services.AddSingleton<IPartnerNotifier, FileNotifier>();
         services.AddSingleton<IPartnerNotifier, EmailNotifier>();
         services.AddSingleton<IFileReader, FileReader>();
+        services.AddSingleton<IPathResolver, PathResolver>();
         services.AddSingleton<IIbtMessageParser, IbtMessageParser>();
         services.AddSingleton<IIbtMessageOrchestrator, IbtMessageOrchestrator>();
         services.AddHostedService<IbtMessageHost>();

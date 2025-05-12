@@ -7,26 +7,59 @@ namespace Homework.Exercise.Application.Services;
 
 public class IbtMessageParser(ILogger<IbtMessageParser> logger, IDateTimeProvider dateTimeProvider) : IIbtMessageParser
 {
+    private static XElement? ProductNameFull(XElement root) =>
+        (from e1 in root.Elements()
+         where e1.Name.LocalName == "Instrument"
+         from e2 in e1.Elements()
+         where e2.Name.LocalName == "ProductNameFull"
+         select e2)
+        .FirstOrDefault();
+
+    private static XElement? IbtTypeCode(XElement root) =>
+        (from e1 in root.Elements()
+         where e1.Name.LocalName == "Instrument"
+         from e2 in e1.Elements()
+         where e2.Name.LocalName == "IBTTypeCode"
+         select e2)
+       .FirstOrDefault();
+
+    private static IEnumerable<XElement> EventTypes(XElement root) =>
+        from e1 in root.Elements()
+        where e1.Name.LocalName == "Events"
+        from e2 in e1.Elements()
+        where e2.Name.LocalName == "Event"
+        from e3 in e2.Elements()
+        where e3.Name.LocalName == "EventType"
+        select e3;
+    
     public IEnumerable<IbtMessage> ParseMessages(string filePath)
     {
         logger.LogInformation("Parsing XML file {FilePath}.", filePath);
         try
         {
-            var messages = new List<IbtMessage>();
             var doc = XDocument.Load(filePath);
-            var eventType = doc.Descendants("EventType").FirstOrDefault()?.Value; // TODO: should look for event types and create message for each one
-            var productNameFull = doc.Descendants("ProductNameFull").FirstOrDefault()?.Value;
-            var ibtTypeCode = doc.Descendants("IBTTypeCode").FirstOrDefault()?.Value;
-            var isin = doc.Descendants("ISIN").FirstOrDefault(e => e.Attribute("IdSchemeCode")?.Value == "-I")?.Value;
-            try
+            if (doc.Root is null)
             {
-                var message = new IbtMessage(eventType, productNameFull, ibtTypeCode, isin, dateTimeProvider.UtcNow);
-                messages.Add(message);
-                logger.LogInformation("Successfully parsed message with {EventType} from file {FilePath}.", eventType, filePath);
+                logger.LogWarning("Could not find root element of XML file {Root}", doc.Root);
+                return [];
             }
-            catch (ArgumentNullException ex)
+            var ibtTypeCode = IbtTypeCode(doc.Root);
+            var productNameFull = ProductNameFull(doc.Root);
+            var isin = string.Empty; // there is no ISIN in the IBT.xml file.
+            var messages = new List<IbtMessage>();
+            var eventTypes = EventTypes(doc.Root);
+            foreach (var eventType in eventTypes)
             {
-                logger.LogError(ex, $"Failed to create {nameof(IbtMessage)}");
+                try
+                {
+                    var message = new IbtMessage(eventType.Value, productNameFull?.Value, ibtTypeCode?.Value, isin, dateTimeProvider.UtcNow);
+                    messages.Add(message);
+                    logger.LogInformation("Successfully parsed message with {EventType} from file {FilePath}.", eventType, filePath);
+                }
+                catch (ArgumentNullException ex)
+                {
+                    logger.LogError(ex, $"Failed to create {nameof(IbtMessage)}");
+                }
             }
             return messages;
         }
