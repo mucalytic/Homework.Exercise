@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Homework.Exercise.Application.Notifiers;
+﻿using Homework.Exercise.Application.HostedServices;
+using Microsoft.Extensions.DependencyInjection;
 using Homework.Exercise.Application.Services;
 using Homework.Exercise.Domain.Interfaces;
 
@@ -9,10 +9,13 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddSingleton<IPartnerNotifier, NotifierForPartnerA>();
-        services.AddSingleton<IPartnerNotifier, NotifierForPartnerB>();
         services.AddTransient<IDateTimeProvider, DateTimeProvider>();
-        services.AddHostedService<FileSystemWatcherService>();
+        services.AddSingleton<IPartnerNotifier, FileNotifier>();
+        services.AddSingleton<IPartnerNotifier, EmailNotifier>();
+        services.AddSingleton<IFileReader, FileReader>();
+        services.AddSingleton<IIbtMessageParser, IbtMessageParser>();
+        services.AddSingleton<IIbtMessageOrchestrator, IbtMessageOrchestrator>();
+        services.AddHostedService<IbtMessageHost>();
         return services;
     }
 }
